@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  scanner:
+    build: .
+    container_name: hp_custom_scanner
+    privileged: true
+    network_mode: host
+    environment:
+      - PORT=8050
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+      - /var/run/dbus:/var/run/dbus
+      - /etc/hp:/etc/hp
+      - /var/lib/hp:/var/lib/hp
+      - ~/.hplip:/root/.hplip
+    restart: unless-stopped
+

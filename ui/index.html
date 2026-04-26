@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HP Web Scanner</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f4f4f9; }
+        button { padding: 15px 30px; font-size: 1.2rem; cursor: pointer; border: none; background: #007bff; color: white; border-radius: 5px; }
+        button:disabled { background: #ccc; }
+        #status { margin-top: 20px; color: #555; }
+    </style>
+</head>
+<body>
+    <h1>HP DeskJet 2600 Scanner</h1>
+    <button id="scanBtn">Scan Document</button>
+    <p id="status"></p>
+
+    <script>
+        const btn = document.getElementById('scanBtn');
+        const status = document.getElementById('status');
+
+        btn.onclick = async () => {
+            btn.disabled = true;
+            status.innerText = "Scanning... Please wait.";
+            
+            try {
+                const response = await fetch('/scan', { method: 'POST' });
+                const data = await response.json();
+                
+                if (data.file) {
+                    status.innerText = "Scan complete! Downloading...";
+                    window.location.href = `/download/${data.file}`;
+                } else {
+                    status.innerText = "Error: " + data.error;
+                }
+            } catch (e) {
+                status.innerText = "Server Error.";
+            } finally {
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>
