@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   scanner:
     build: .
@@ -7,11 +8,14 @@ services:
     network_mode: host
     environment:
       - PORT=8050
+      - NODE_ENV=production
     volumes:
+      # Map the temporary scans directory
+      - ./scans:/app/scans
+      # Hardware & Driver Mappings
       - /dev/bus/usb:/dev/bus/usb
       - /var/run/dbus:/var/run/dbus
       - /etc/hp:/etc/hp
       - /var/lib/hp:/var/lib/hp
       - ~/.hplip:/root/.hplip
     restart: unless-stopped
-
