@@ -1,5 +1,5 @@
 
-FROM node:18 AS ui-builder
+FROM node:22 AS ui-builder
 
 WORKDIR /app/ui
 
@@ -14,7 +14,7 @@ RUN npm run build
 # ==========================================
 # Stage 2: Final Production Server
 # ==========================================
-FROM node:18-slim
+FROM node:22-slim
 
 # Install HPLIP and SANE dependencies
 RUN apt-get update && apt-get install -y \
